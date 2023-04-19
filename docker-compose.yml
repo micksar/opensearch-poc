@@ -8,7 +8,8 @@ services:
       - opendistro_security.ssl.http.enabled=false
       - discovery.type=single-node
     ports:
-      - "9200:9200"
+      - "9200:9200"  # REST API
+      - "9600:9600"  # PERFORMANCE ANALYZER
     volumes:
       - ./opensearch-data:/usr/share/opensearch/data
       #- ./ConfigFiles/opensearch.yml:/usr/share/opensearch/config/opensearch.yml
@@ -22,7 +23,7 @@ services:
     depends_on:
       - opensearch
     volumes:
-      - .:/app
+      - ./app:/app
     networks:
       - opensearch-network
 
