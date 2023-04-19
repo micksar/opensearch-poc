@@ -1,0 +1,31 @@
+version: '3'
+services:
+  opensearch:
+    image: opensearchproject/opensearch
+    container_name: opensearch
+    environment:
+      - plugins.security.disabled=true
+      - opendistro_security.ssl.http.enabled=false
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./opensearch-data:/usr/share/opensearch/data
+      #- ./ConfigFiles/opensearch.yml:/usr/share/opensearch/config/opensearch.yml
+    networks:
+      - opensearch-network
+
+  poc:
+    build: .
+    container_name: poc
+    #platform: linux/arm64/v8
+    depends_on:
+      - opensearch
+    volumes:
+      - .:/app
+    networks:
+      - opensearch-network
+
+networks:
+  opensearch-network:
+    driver: bridge
